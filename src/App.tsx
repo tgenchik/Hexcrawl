@@ -7374,7 +7374,7 @@ export function App() {
   const [genSizeCategory, setGenSizeCategory] = useState<'auto' | Region['sizeCategory']>('auto');
   const [genLandType, setGenLandType] = useState<'auto' | BiomeLandType>('auto');
   const [genBiome, setGenBiome] = useState<'auto' | BiomeId>('auto');
-  const [genCoastal, setGenCoastal] = useState<'auto' | CoastalPreference>('auto');
+  const [genCoastal, setGenCoastal] = useState<'auto' | CoastalPreference>('mainland');
   // Режим ручной "кисти берега": клик по гексу кромки делает его морем и обратно.
   const [seaBrushActive, setSeaBrushActive] = useState(false);
   const [clickPromptCandidateKey, setClickPromptCandidateKey] = useState<string | null>(null);
@@ -7873,7 +7873,7 @@ export function App() {
     targetSize: genSizeCategory === 'auto' ? undefined : rollRegionSizeInCategory(genSizeCategory),
     landType: genLandType === 'auto' ? undefined : genLandType,
     biomeId: genBiome === 'auto' ? undefined : genBiome,
-    coastalPreference: genCoastal === 'auto' ? undefined : genCoastal
+    coastalPreference: 'mainland'
   });
 
   // Ручная кисть берега: переключает гекс кромки между морем и сушей-кандидатом.
@@ -8208,6 +8208,7 @@ export function App() {
                 onClick={() => setSeaBrushActive((v) => !v)}
                 className="secondary"
                 aria-pressed={seaBrushActive}
+                disabled
               >
                 Кисть берега: {seaBrushActive ? 'ВКЛ' : 'ВЫКЛ'}
               </button>
@@ -8251,9 +8252,7 @@ export function App() {
               </label>
               <label>
                 Берег
-                <select value={genCoastal} onChange={(e) => setGenCoastal(e.target.value as typeof genCoastal)}>
-                  <option value="auto">Авто</option>
-                  <option value="coast">Побережье</option>
+                <select value={genCoastal} disabled onChange={(e) => setGenCoastal(e.target.value as typeof genCoastal)}>
                   <option value="mainland">Материк</option>
                 </select>
               </label>
